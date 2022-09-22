@@ -4,7 +4,7 @@ using NLog.Layouts;
 using NLog.Targets;
 using ILogger = NLog.ILogger;
 
-namespace RestApiTask.Utils
+namespace DataBaseTask.Utils
 {
     public sealed class Logger
     {

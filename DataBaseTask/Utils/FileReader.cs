@@ -1,23 +1,15 @@
 ﻿using DataBaseTask.Constants;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace DataBaseTask.Utils
 {
     public static class FileReader
     {
-        public static Dictionary<string, string> requestUrlNumbers = new Dictionary<string, string>();
-
-        public static void GetRequestUrls()
+        public static string ReadFile(string path)
         {
-            Test.Log.Info("Get request URLs");
-            var filePath = ProjectConstants.PathToRequestData;
-            var json = File.ReadAllText(filePath);
-            var jsonObj = JObject.Parse(json);
-
-            foreach (var element in jsonObj)
+            using (StreamReader sr = new StreamReader(path))
             {
-                requestUrlNumbers.Add(element.Key, element.Value.ToString());
+                Test.Log.Info(string.Format("File {0} read", path));
+                return sr.ReadToEnd();
             }
         }
 
@@ -29,21 +21,6 @@ namespace DataBaseTask.Utils
             {
                 file.Delete();
                 Test.Log.Info("Log file deleted");
-            }
-        }
-
-        public static T ReadJsonData<T>(string path)
-        {
-            Test.Log.Info("Start deserializing");
-            return JsonConvert.DeserializeObject<T>(ReadFile(path));
-        }
-
-        public static string ReadFile(string path)
-        {
-            using (StreamReader sr = new StreamReader(path))
-            {
-                Test.Log.Info("Start file reading");
-                return sr.ReadToEnd();
             }
         }
     }

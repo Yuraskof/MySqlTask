@@ -1,11 +1,5 @@
-﻿using DataBaseTask.Constants;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataBaseTask.Utils
 {
@@ -21,6 +15,12 @@ namespace DataBaseTask.Utils
         {
             Test.Log.Info("Start deserializing");
             return JsonConvert.DeserializeObject<T>(content);
+        }
+
+        public static T ReadJsonDataFromPath<T>(string path)
+        {
+            Test.Log.Info("Start deserializing");
+            return JsonConvert.DeserializeObject<T>(FileReader.ReadFile(path));
         }
     }
 }

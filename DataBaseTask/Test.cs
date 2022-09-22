@@ -1,7 +1,6 @@
 using DataBaseTask.Models;
 using DataBaseTask.Utils;
 using MySql.Data.MySqlClient;
-using RestApiTask.Utils;
 
 namespace DataBaseTask
 {
@@ -18,24 +17,29 @@ namespace DataBaseTask
         }
 
         [Test]
-        [TestCaseSource(nameof(PrepareToTest))]
+        
         public void SqlRequestsTest()
         {
+            Log.Info("Test case started");
             model = ModelUtils.GetSqlRequestModel("MinimalWorkTime");
             reader = DataBase.SendRequest(model.request);
-            ResponseParser.ParseToLog(reader, model.columnsNames);
-        }
+            Assert.IsTrue(ResponseParser.ParseToLog(reader, model.columnsNames));
+            Log.Info("Step 1 completed");
 
-        public static IEnumerable<object[]> PrepareToTest()
-        {
-            FileReader.ClearLogFile();
+            model = ModelUtils.GetSqlRequestModel("UniqueTestsCount");
+            reader = DataBase.SendRequest(model.request);
+            Assert.IsTrue(ResponseParser.ParseToLog(reader, model.columnsNames));
+            Log.Info("Step 2 completed");
 
-            List<ProductModel> modelsList = FileReader.GetModels();
+            model = ModelUtils.GetSqlRequestModel("TestsAfterDate");
+            reader = DataBase.SendRequest(model.request);
+            Assert.IsTrue(ResponseParser.ParseToLog(reader, model.columnsNames));
+            Log.Info("Step 3 completed");
 
-            foreach (var model in modelsList)
-            {
-                yield return new[] { model };
-            }
+            model = ModelUtils.GetSqlRequestModel("TestsInDifferentBrowsers");
+            reader = DataBase.SendRequest(model.request);
+            Assert.IsTrue(ResponseParser.ParseToLog(reader, model.columnsNames));
+            Log.Info("Step 4 completed. Test case finished successfully.");
         }
     }
 }

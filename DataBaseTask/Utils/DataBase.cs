@@ -1,19 +1,20 @@
-﻿using MySql.Data.MySqlClient;
+﻿using DataBaseTask.Constants;
+using DataBaseTask.Models;
+using MySql.Data.MySqlClient;
 
 namespace DataBaseTask.Utils
 {
     public class DataBase
     {
+        private static TestData testData = JsonUtils.ReadJsonDataFromPath<TestData>(ProjectConstants.PathToTestData);
+
         public static MySqlConnection mySqlDb;
-        const string host = "localhost";
-        const string user = "root";
-        const string database = "union_reporting";
-        const string password = "2146407";
         static string connect;
 
         private static void ConnectToDataBase()
         {
-            connect = "Database=" + database + ";Datasource=" + host + ";User=" + user + ";Password=" + password;
+            Test.Log.Info("Connect to data base");
+            connect = "Database=" + testData.database + ";Datasource=" + testData.host + ";User=" + testData.user + ";Password=" + testData.password;
             mySqlDb = new MySqlConnection(connect);
             mySqlDb.Open();
         }
@@ -22,10 +23,11 @@ namespace DataBaseTask.Utils
         {
             ConnectToDataBase();
 
+            Test.Log.Info(string.Format("Send request {0}", request));
+
             MySqlCommand command = new MySqlCommand(request, mySqlDb);
 
             MySqlDataReader reader = command.ExecuteReader();
-            
             return reader;
         }
     }
