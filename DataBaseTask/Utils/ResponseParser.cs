@@ -9,51 +9,60 @@ namespace DataBaseTask.Utils
 {
     public class ResponseParser
     {
-        public static void ParseToLogMinimalTimeWorkResponse(MySqlDataReader reader)
+        public static void ParseToLog(MySqlDataReader reader, string columnNames)
         {
-            Test.Log.Info("ProjectName\tTestName\tMinimalWorkingTime");
+            Test.Log.Info(columnNames);
+
+            int columnsCount = StringUtil.GetSeparatedStrings(columnNames, "\t").Count;
 
             while (reader.Read())
             {
-                string projectName = reader[0].ToString();
-                string testName = reader[1].ToString();
-                string minWorkingTime = reader[2].ToString();
-
-                Test.Log.Info(string.Format("{0}\t{1}\t{2}", projectName, testName, minWorkingTime));
+                switch (columnsCount)
+                {
+                    case 1:
+                        Test.Log.Info(reader[0].ToString());
+                        continue;
+                    case 2:
+                        Test.Log.Info(string.Format(reader[0]+"\t"+ reader[1]));
+                        continue;
+                    case 3:
+                        Test.Log.Info(string.Format(reader[0] + "\t" + reader[1] + "\t" + reader[2]));
+                        continue;
+                }
             }
             reader.Close();
             DataBase.mySqlDb.Close();
         }
 
-        public static void ParseToLogUniqueTestsOnProject(MySqlDataReader reader)
-        {
-            Test.Log.Info("ProjectName\tUniqueTestsCount");
+        //public static void ParseToLogUniqueTestsOnProject(MySqlDataReader reader)
+        //{
+        //    Test.Log.Info("");
 
-            while (reader.Read())
-            {
-                string projectName = reader[0].ToString();
-                string testsCount = reader[1].ToString();
+        //    while (reader.Read())
+        //    {
+        //        string projectName = reader[0].ToString();
+        //        string testsCount = reader[1].ToString();
                 
-                Test.Log.Info(string.Format("{0}\t{1}", projectName, testsCount));
-            }
-            reader.Close();
-            DataBase.mySqlDb.Close();
-        }
+        //        Test.Log.Info(string.Format("{0}\t{1}", projectName, testsCount));
+        //    }
+        //    reader.Close();
+        //    DataBase.mySqlDb.Close();
+        //}
 
-        public static void Parse(MySqlDataReader reader)
-        {
-            Test.Log.Info("ProjectName\tUniqueTestsCount");
+        //public static void Parse(MySqlDataReader reader)
+        //{
+        //    Test.Log.Info("ProjectName\tUniqueTestsCount");
 
-            while (reader.Read())
-            {
-                string projectName = reader[0].ToString();
-                //string testsCount = reader[1].ToString();
+        //    while (reader.Read())
+        //    {
+        //        string projectName = reader[0].ToString();
+        //        //string testsCount = reader[1].ToString();
 
-                Test.Log.Info(string.Format("{0}", projectName));
-            }
-            reader.Close();
-            DataBase.mySqlDb.Close();
-        }
+        //        Test.Log.Info(string.Format("{0}", projectName));
+        //    }
+        //    reader.Close();
+        //    DataBase.mySqlDb.Close();
+        //}
 
     }
 }

@@ -1,0 +1,26 @@
+{
+  "MinimalWorkTime": [
+    {
+      "request": "SELECT project.name, test.name, test.end_time - test.start_time AS MinTime FROM test JOIN project ON project.id = test.project_id ORDER BY project.name, test.name",
+      "columnsNames": "ProjectName\tTestName\tMinimalWorkingTime"
+    }
+  ],
+  "UniqueTestsCount": [
+    {
+      "request": "SELECT DISTINCT project.name, COUNT(test.name) FROM test JOIN project ON project.id = test.project_id GROUP BY project.name",
+      "columnsNames": "ProjectName\tUniqueTestsCount"
+    }
+  ],
+  "TestsAfterDate": [
+    {
+      "request": "SELECT DISTINCT project.name, test.name, test.start_time FROM test JOIN project ON project.id = test.project_id WHERE test.start_time > '2015-11-07 23:59:59' ORDER BY project.name, test.name",
+      "columnsNames": "ProjectName\tTestName\tDate"
+    }
+  ],
+  "TestsInDifferentBrowsers": [
+    {
+      "request": "SELECT COUNT(browser) FROM test WHERE browser = 'Firefox' UNION SELECT COUNT(browser) FROM test WHERE browser = 'Chrome' GROUP BY browser",
+      "columnsNames": "TestsCountInBrowser"
+    }
+  ]
+}
