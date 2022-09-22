@@ -1,6 +1,6 @@
 {
   "host": "localhost",
-  "user": "root",
+  "user": "",
   "database": "union_reporting",
-  "password": "2146407"
+  "password": ""
 }
